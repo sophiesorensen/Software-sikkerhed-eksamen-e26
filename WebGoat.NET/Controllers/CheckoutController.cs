@@ -1,4 +1,4 @@
-﻿using WebGoatCore.Models;
+﻿﻿using WebGoatCore.Models;
 using WebGoatCore.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
