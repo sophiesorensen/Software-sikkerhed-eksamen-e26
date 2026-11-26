@@ -1,4 +1,4 @@
-﻿using WebGoatCore.Models;
+﻿﻿using WebGoatCore.Models;
 using System;
 using System.Linq;
 
@@ -30,7 +30,7 @@ namespace WebGoatCore.Data
         }
 
         //TODO: Add try/catch logic
-        public string CreateCustomer(string companyName, string contactName, string? address, string? city, string? region, PostalCode? postalCode, string? country)
+        public string CreateCustomer(string companyName, string contactName, string? address, string? city, string? region, string? postalCode, string? country)
         {
             var customerId = GenerateCustomerId(companyName);
             var customer = new Customer()
@@ -41,9 +41,9 @@ namespace WebGoatCore.Data
                 Address = address,
                 City = city,
                 Region = region,
+                PostalCode = postalCode,
                 Country = country
             };
-            customer.SetPostalCode(postalCode);
             _context.Customers.Add(customer);
             _context.SaveChanges();
             return customerId;

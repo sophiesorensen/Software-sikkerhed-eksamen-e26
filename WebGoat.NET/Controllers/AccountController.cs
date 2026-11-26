@@ -1,5 +1,4 @@
-﻿using WebGoatCore.Data;
-using System;
+﻿﻿using WebGoatCore.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -86,7 +85,6 @@ namespace WebGoatCore.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            PostalCode? postalCode = ParsePostalCode(model.PostalCode);
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser(model.Username)
@@ -97,7 +95,7 @@ namespace WebGoatCore.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    _customerRepository.CreateCustomer(model.CompanyName, model.Username, model.Address, model.City, model.Region, postalCode, model.Country);
+                    _customerRepository.CreateCustomer(model.CompanyName, model.Username, model.Address, model.City, model.Region, model.PostalCode, model.Country);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
@@ -142,7 +140,7 @@ namespace WebGoatCore.Controllers
                 Address = customer.Address,
                 City = customer.City,
                 Region = customer.Region,
-                PostalCode = customer.PostalCode?.Value,
+                PostalCode = customer.PostalCode,
                 Country = customer.Country,
             });
         }
@@ -157,7 +155,6 @@ namespace WebGoatCore.Controllers
                 return View(model);
             }
 
-            PostalCode? postalCode = ParsePostalCode(model.PostalCode);
             if (ModelState.IsValid)
             {
                 customer.CompanyName = model.CompanyName ?? customer.CompanyName;
@@ -165,11 +162,7 @@ namespace WebGoatCore.Controllers
                 customer.Address = model.Address ?? customer.Address;
                 customer.City = model.City ?? customer.City;
                 customer.Region = model.Region ?? customer.Region;
-                if (model.PostalCode is not null)
-                {
-                    customer.SetPostalCode(postalCode);
-                }
-
+                customer.PostalCode = model.PostalCode ?? customer.PostalCode;
                 customer.Country = model.Country ?? customer.Country;
                 _customerRepository.SaveCustomer(customer);
 
@@ -177,26 +170,6 @@ namespace WebGoatCore.Controllers
             }
 
             return View(model);
-        }
-
-        private PostalCode? ParsePostalCode(string? value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return null;
-            }
-
-            try
-            {
-                return new PostalCode(value);
-            }
-            catch (ArgumentException)
-            {
-                ModelState.AddModelError(
-                    nameof(RegisterViewModel.PostalCode),
-                    $"Postal code must contain printable text and be at most {PostalCode.MaximumLength} characters.");
-                return null;
-            }
         }
 
         [HttpGet]
