@@ -37,6 +37,7 @@
         <span>@Html.DisplayNameFor(m => m.PostalCode)</span>
         <br>
         <input asp-for="PostalCode" type="text" value="@Model.PostalCode" class="textEntry"><br>
+        @Html.ValidationMessageFor(m => m.PostalCode)
         <span>@Html.DisplayNameFor(m => m.Country)</span>
         <br>
         <input asp-for="Country" type="text" value="@Model.Country" class="textEntry">
