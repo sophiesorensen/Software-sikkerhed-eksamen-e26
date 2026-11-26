@@ -16,6 +16,7 @@ namespace WebGoatCore.ViewModels
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "Please enter your company email")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
         public string Email { get; set; }
 
         [StringLength(50, MinimumLength = 2)]

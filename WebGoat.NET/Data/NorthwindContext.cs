@@ -53,6 +53,12 @@ namespace WebGoatCore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Customer>()
+                .Property(customer => customer.PostalCode)
+                .HasConversion(
+                    postalCode => postalCode!.Value,
+                    value => new PostalCode(value))
+                .IsRequired(false);
             modelBuilder.Entity<OrderDetail>().HasKey(a => new { a.ProductId, a.OrderId });
         }
 
