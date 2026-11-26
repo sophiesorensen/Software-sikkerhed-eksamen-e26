@@ -69,7 +69,7 @@ namespace WebGoatCore.Controllers
                 _model.Address = customer.Address ?? string.Empty;
                 _model.City = customer.City ?? string.Empty;
                 _model.Region = customer.Region ?? string.Empty;
-                _model.PostalCode = customer.PostalCode?.Value ?? string.Empty;
+                _model.PostalCode = customer.PostalCode ?? string.Empty;
                 _model.Country = customer.Country ?? string.Empty;
             }
         }
