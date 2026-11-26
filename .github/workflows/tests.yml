@@ -1,0 +1,34 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Henter projektet fra GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Installerer .NET 10
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Henter projektets dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Bygger projektet
+      - name: Build
+        run: dotnet build --no-restore
+
+      # Kører unit tests
+      - name: Run unit tests
+        run: dotnet test --no-build
